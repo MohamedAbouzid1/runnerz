@@ -1,11 +1,14 @@
 package dev.mohamed.runnerz.run;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("/api/runs")
 public class RunController {
 
     private final RunRepository runRepository;
@@ -14,10 +17,32 @@ public class RunController {
         this.runRepository = runRepository;
     }
 
-    @GetMapping("/api/runs")
+    @GetMapping("")
 
     List<Run> findAll() {
         return runRepository.findAll();
     }
+
+    @GetMapping("/{id}")
+    Run findById(@PathVariable Integer id) {
+
+        Optional<Run> run = runRepository.findById(id);
+        if (run.isPresent()) {
+            return run.get();
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+    }
+    //post
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("")
+    void create(@RequestBody Run run) {
+        runRepository.create(run);
+    }
+    //put
+
+    //delete
+
+
 
 }

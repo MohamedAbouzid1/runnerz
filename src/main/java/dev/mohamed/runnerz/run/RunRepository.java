@@ -3,6 +3,7 @@ package dev.mohamed.runnerz.run;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
 
@@ -11,10 +12,19 @@ import jakarta.annotation.PostConstruct;
 @Repository
 public class RunRepository {
 
-    private List<Run> runs = new ArrayList<>();
+    final List<Run> runs = new ArrayList<>();
 
     List<Run> findAll() {
         return runs;
+    }
+
+    Optional<Run> findById(int id) {
+        return runs.stream().filter(run -> run.id() == id).findFirst();
+    }
+
+    // method to be able to create a new run
+    void create(Run run) {
+        runs.add(run);
     }
 
     @PostConstruct
