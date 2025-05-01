@@ -3,9 +3,9 @@ package dev.mohamed.runnerz.run;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/runs")
@@ -30,19 +30,31 @@ public class RunController {
         if (run.isPresent()) {
             return run.get();
         } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new RunNotFoundException();
         }
     }
     //post
-    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    void create(@RequestBody Run run) {
-        runRepository.create(run);
+    @ResponseStatus(HttpStatus.CREATED)
+    void create(@Valid @RequestBody Run run) {
+        runRepository.save(run);
     }
     //put
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{id}")
+    void update(@Valid @RequestBody Run run, @PathVariable Integer id) {
+        runRepository.save(run);
+    }
     //delete
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    void delete(@PathVariable Integer id) {
+        runRepository.delete(runRepository.findById(id).get());
+    }
+    @GetMapping("/location/{location}")
+    List<Run> findAllByLocation(@PathVariable String location) {
+        return runRepository.findAllByLocation(location);
+    }
 
 
 }

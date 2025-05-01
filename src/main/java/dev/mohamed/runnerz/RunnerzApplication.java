@@ -2,13 +2,8 @@ package dev.mohamed.runnerz;
 
 import java.util.logging.Logger;
 
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import dev.mohamed.runnerz.run.Run;
-import dev.mohamed.runnerz.run.Location;
-import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class RunnerzApplication {
@@ -19,9 +14,9 @@ public class RunnerzApplication {
 		SpringApplication.run(RunnerzApplication.class, args);
 		log.info("Runnerz Application started successfully.");
 	}
-
+/*
 	@Bean
-	CommandLineRunner runner() {
+	CommandLineRunner runner(RunRepository runRepository) {
 		return args -> {
 			Run run = new Run(
 					1,
@@ -30,8 +25,9 @@ public class RunnerzApplication {
 					LocalDateTime.now().plusHours(1),
 					5,
 					Location.OUTDOOR);
-			log.info("Run created: " + run);
+			runRepository.create(run);
 		};
 
 	}
+	*/
 }
